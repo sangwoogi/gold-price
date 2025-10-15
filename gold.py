@@ -15,19 +15,35 @@ def get_domestic_gold_price():
 
 # 2. 국제 금 시세 (달러)
 def get_international_gold_price():
-    url = "https://finance.naver.com/marketindex/worldGoldDetail.naver?marketindexCd=CMDT_GLD"
-    res = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+    url = "https://finance.naver.com/marketindex/worldGoldDetail.naver?marketindexCd=CMDT_GLDUSD"
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    res = requests.get(url, headers=headers)
+    res.raise_for_status()
     soup = BeautifulSoup(res.text, "html.parser")
+
     price_tag = soup.select_one("p.no_today span.blind")
-    return float(price_tag.text.replace(",", "")) if price_tag else None
+    if not price_tag:
+        print("❌ 국제 금 시세 데이터를 찾을 수 없습니다.")
+        return None
+
+    return float(price_tag.text.replace(",", ""))
 
 # 3. 환율 (USD/KRW)
 def get_usd_krw_rate():
     url = "https://finance.naver.com/marketindex/exchangeDetail.naver?marketindexCd=FX_USDKRW"
-    res = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"}
+
+    res = requests.get(url, headers=headers)
+    res.raise_for_status()
     soup = BeautifulSoup(res.text, "html.parser")
+
+    # 실제 환율이 들어있는 태그 찾기
     rate_tag = soup.select_one("p.no_today span.blind")
-    return float(rate_tag.text.replace(",", "")) if rate_tag else None
+    if not rate_tag:
+        print("❌ 환율 데이터를 찾을 수 없습니다.")
+        return None
+
+    return float(rate_tag.text.replace(",", ""))
 
 # 4. 계산 및 출력
 def calculate_gap():
@@ -35,9 +51,15 @@ def calculate_gap():
     international_usd = get_international_gold_price()
     usd_krw = get_usd_krw_rate()
 
-    international_krw = international_usd * usd_krw
-    gap_rate = ((domestic - international_krw) / international_krw) * 100
+    print(f"✅ Domestic Gold (KRW): {domestic}")
+    print(f"✅ International Gold (USD): {international_usd}")
+    print(f"✅ USD/KRW Rate: {usd_krw}")
 
+    if None in [domestic, international_usd, usd_krw]:
+        raise ValueError("❌ 시세 스크래핑 실패. None 값이 있습니다.")
+
+    international_krw = international_usd * usd_krw
+    gap_rate = (domestic - international_krw) / international_krw * 100
     return domestic, international_krw, usd_krw, gap_rate
 
 # 5. 이메일 발송
