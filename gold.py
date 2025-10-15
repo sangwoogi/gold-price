@@ -6,13 +6,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# ========== [1] 이메일 설정 ==========
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-SENDER_EMAIL = "si859517@gmail.com"   # Gmail 주소
-SENDER_PASSWORD = "Avoid1172!"   # Gmail 앱 비밀번호 (2FA 필요)
-RECEIVER_EMAIL = "receiver_email@example.com"  # 받을 주소
-
 # ========== [2] 네이버 금융에서 시세 스크래핑 ==========
 # 1. 네이버 금융에서 국내 금 시세 가져오기
 def get_domestic_gold_price():
