@@ -58,9 +58,9 @@ def calculate_gap():
 
 # ========== [5] 이메일 전송 ==========
 def send_email(domestic, international, usd_krw, gap_rate):
-    Gold_Email_sender = "pastomine36@gmail.com"
-    Gold_Email_receiver = "si859517@gmail.com"
-    password = "cwxw feya bmbo kube"  # Gmail 앱 비밀번호 사용
+    Gold_Email_sender = 
+    Gold_Email_receiver = 
+    password =   # Gmail 앱 비밀번호 사용
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     subject = f"[금 시세 알림] {now}"
