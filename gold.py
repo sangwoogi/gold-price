@@ -6,7 +6,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
-# ========== [2] 네이버 금융에서 시세 스크래핑 ==========
 # 1. 네이버 금융에서 국내 금 시세 가져오기
 def get_domestic_gold_price():
     url = "https://finance.naver.com/marketindex/goldDetail.naver?marketindexCd=CMDT_GLDKRW"
@@ -59,9 +58,9 @@ def calculate_gap():
 
 # ========== [5] 이메일 전송 ==========
 def send_email(domestic, international, usd_krw, gap_rate):
-    sender = "your_email@gmail.com"
-    receiver = "receiver_email@gmail.com"
-    password = "your_app_password"  # Gmail 앱 비밀번호 사용
+    Gold_Email_sender = "pastomine36@gmail.com"
+    Gold_Email_receiver = "si859517@gmail.com"
+    password = "cwxw feya bmbo kube"  # Gmail 앱 비밀번호 사용
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M")
     subject = f"[금 시세 알림] {now}"
@@ -78,11 +77,11 @@ def send_email(domestic, international, usd_krw, gap_rate):
 
     msg = MIMEText(body)
     msg["Subject"] = subject
-    msg["From"] = sender
-    msg["To"] = receiver
+    msg["From"] = Gold_Email_sender
+    msg["To"] = Gold_Email_receiver
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-        smtp.login(sender, password)
+        smtp.login(Gold_Email_sender, password)
         smtp.send_message(msg)
 
     print("✅ 이메일 전송 완료")
